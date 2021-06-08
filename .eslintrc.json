@@ -1,0 +1,25 @@
+{
+   "extends": [
+      "airbnb-typescript"
+   ],
+   "parserOptions": {
+      "project": "./tsconfig.eslint.json"
+   },
+   "parser": "@typescript-eslint/parser",
+   "plugins": [
+      "@typescript-eslint"
+   ],
+   "env": {
+      "browser": true,
+      "node": true,
+      "jasmine": true
+   },
+   "rules": {
+      "no-tabs": 2,
+      "no-restricted-syntax": ["error", {
+         "selector": "ExportDefaultDeclaration",
+         "message": "Prefer named exports"
+       }],
+       "import/prefer-default-export": 0
+   }
+}
