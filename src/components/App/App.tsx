@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Box from '@material-ui/core/Box';
 import { makeStyles } from '@material-ui/core/styles';
 import { moviesAPI } from '../../utils/API';
+import { MovieList } from '../MovieList/MovieList';
 // eslint-disable-next-line import/no-cycle
 
 const useStyles = makeStyles(
@@ -38,7 +39,6 @@ export function App() {
         page.map((movie) => listMovies.push(movie));
       });
       setMoviesList(listMovies);
-      console.log(moviesList);
     };
     fetchMovies();
   }, [
@@ -46,9 +46,12 @@ export function App() {
   ]);
 
   return (
-    <Box>
-      {console.log(moviesList)}
-      <div className={classes.h1}>TEST APP</div>
-    </Box>
+    <>
+      <Box>
+        {console.log(moviesList)}
+        <div className={classes.h1}>TEST APP</div>
+      </Box>
+      {moviesList.length !== 0 && <MovieList movies={moviesList} />}
+    </>
   );
 }
