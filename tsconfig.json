@@ -15,6 +15,7 @@
     "allowSyntheticDefaultImports": true,
     "experimentalDecorators": true,
     "skipLibCheck": true,
+    "noImplicitAny": false,
     "declaration": false,
     "sourceMap": false,
     "baseUrl": ".",
