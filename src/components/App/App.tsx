@@ -14,17 +14,31 @@ const useStyles = makeStyles(
 );
 
 export function App() {
+  const initList: any = [];
   const classes = useStyles();
-  const [moviesList, setMoviesList] = useState({});
+  const [moviesList, setMoviesList] = useState(initList);
 
   useEffect(() => {
-    if (Object.keys(moviesList).length !== 0) {
+    if (moviesList.length !== 0) {
       return;
     }
     const fetchMovies = async () => {
-      const list = await moviesAPI.getList(1);
-
-      setMoviesList(list);
+      const listPages: any = [];
+      let i = 1;
+      while (i <= 25) {
+        // eslint-disable-next-line no-await-in-loop
+        const page = await moviesAPI.getList(i);
+        listPages.push(page.results);
+        // eslint-disable-next-line no-plusplus
+        i++;
+      }
+      const listMovies: any = [];
+      // eslint-disable-next-line array-callback-return
+      listPages.map((page) => {
+        page.map((movie) => listMovies.push(movie));
+      });
+      setMoviesList(listMovies);
+      console.log(moviesList);
     };
     fetchMovies();
   }, [
