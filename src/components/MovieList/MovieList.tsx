@@ -16,6 +16,11 @@ const useStyles = makeStyles(
     marked: {
       backgroundColor: 'grey',
     },
+    clickable: {
+      '&:hover': {
+        cursor: 'pointer',
+      },
+    },
   },
 );
 
@@ -24,6 +29,8 @@ export const MovieList = () => {
   const {
     moviesList, setMoviesList, setMarkedMovies,
   } = useAppProvider();
+
+  const [order, setOrder] = React.useState('ASC');
 
   const onRemoveMovie = (id: number) => {
     const updatedList = moviesList.filter((movie) => movie.id !== id);
@@ -48,6 +55,18 @@ export const MovieList = () => {
     setMarkedMovies(getMarkedMovies());
   };
 
+  const onSortList = () => {
+    if (order === 'ASC') {
+      const sortedMoviesList = moviesList.sort((a, b) => a.vote_average - b.vote_average);
+      setMoviesList(sortedMoviesList);
+      setOrder('DESC');
+    } else {
+      const sortedMoviesList = moviesList.sort((a, b) => b.vote_average - a.vote_average);
+      setMoviesList(sortedMoviesList);
+      setOrder('ASC');
+    }
+  };
+
   return (
     <TableContainer component={Paper}>
       <Table>
@@ -55,7 +74,10 @@ export const MovieList = () => {
           <TableRow>
             <TableCell align="center">Image</TableCell>
             <TableCell align="center">Title</TableCell>
-            <TableCell align="center">Rate</TableCell>
+            <TableCell align="center">
+              Rate
+              <Box className={classes.clickable} onClick={() => onSortList()}>&uarr;&darr;</Box>
+            </TableCell>
             <TableCell align="center">Year</TableCell>
             <TableCell align="center">Tools</TableCell>
           </TableRow>
@@ -80,10 +102,10 @@ export const MovieList = () => {
                     {movie.release_date}
                   </TableCell>
                   <TableCell>
-                    <Box onClick={() => onRemoveMovie(movie.id)}>
+                    <Box className={classes.clickable} onClick={() => onRemoveMovie(movie.id)}>
                       &#10006;
                     </Box>
-                    <Box onClick={() => onToggleMarkMovie(movie.id)}>
+                    <Box className={classes.clickable} onClick={() => onToggleMarkMovie(movie.id)}>
                       {String(movie.id) in localStorage ? <>&#11088;</> : <>&#9734;</>}
                     </Box>
                   </TableCell>

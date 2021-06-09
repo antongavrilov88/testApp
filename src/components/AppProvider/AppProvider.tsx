@@ -1,7 +1,7 @@
 /* eslint-disable import/no-cycle */
 import React, { useContext, useEffect, useState } from 'react';
 import Box from '@material-ui/core/Box';
-import { makeStyles } from '@material-ui/core/styles';
+import { CircularProgress } from '@material-ui/core';
 import { moviesAPI } from '../../utils/API';
 import { MovieList } from '../MovieList/MovieList';
 
@@ -21,22 +21,8 @@ const initContext: Context = {
 
 export const AppContext = React.createContext(initContext);
 
-const useStyles = makeStyles(
-  {
-    h1: {
-      color: '#27aedb',
-      textAlign: 'center',
-    },
-    content: {
-      width: '75%',
-      display: 'flex',
-      justifyContent: 'center',
-    },
-  },
-);
-
 export const AppProvider = () => {
-  const classes = useStyles();
+  // const classes = useStyles();
   const initList: any = [];
 
   const getMarkedMovies = () => {
@@ -85,9 +71,10 @@ export const AppProvider = () => {
         setMarkedMovies,
       }}
     >
-      <Box className={classes.content}>
+      <Box display="flex" justifyContent="center">
         <Box>
-          {moviesList.length !== 0 && <MovieList />}
+          {moviesList.length !== 0 ? <MovieList />
+            : <CircularProgress />}
         </Box>
       </Box>
     </AppContext.Provider>
