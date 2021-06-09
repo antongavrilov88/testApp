@@ -12,7 +12,9 @@ import Box from '@material-ui/core/Box';
 import { useAppProvider } from '../AppProvider/AppProvider';
 
 export const MovieList = () => {
-  const { moviesList, setMoviesList } = useAppProvider();
+  const {
+    moviesList, setMoviesList, markedMovies, setMarkedMovies,
+  } = useAppProvider();
 
   const onRemoveMovie = (id: number) => {
     const updatedList = moviesList.filter((movie) => movie.id !== id);
@@ -20,8 +22,26 @@ export const MovieList = () => {
     setMoviesList(updatedList);
   };
 
+  const onToggleMarkMovie = (id: number) => {
+    if (String(id) in localStorage) {
+      localStorage.removeItem(String(id));
+    } else {
+      localStorage.setItem(`${id}`, 'marked');
+    }
+    const getMarkedMovies = () => {
+      const initMarkedMoviesList: string[] = [];
+      // eslint-disable-next-line guard-for-in
+      for (const key in localStorage) {
+        initMarkedMoviesList.push(key);
+      }
+      return initMarkedMoviesList;
+    };
+    setMarkedMovies(getMarkedMovies());
+  };
+
   return (
     <TableContainer component={Paper}>
+      {console.log(markedMovies)}
       <Table>
         <TableHead>
           <TableRow>
@@ -36,6 +56,7 @@ export const MovieList = () => {
           {
             moviesList.map((movie) => (
               <TableRow key={movie.id}>
+                {console.log(String(movie.id) in localStorage)}
                 <TableCell>
                   <img src={`https://image.tmdb.org/t/p/w200/${movie.poster_path}`} alt="" />
                 </TableCell>
@@ -49,11 +70,10 @@ export const MovieList = () => {
                   {movie.release_date}
                 </TableCell>
                 <TableCell>
-                  {console.log('id', movie.id)}
                   <Box onClick={() => onRemoveMovie(movie.id)}>
                     &#10006;
                   </Box>
-                  <Box>
+                  <Box onClick={() => onToggleMarkMovie(movie.id)}>
                     &#9734;
                   </Box>
                 </TableCell>
