@@ -1,3 +1,4 @@
+/* eslint-disable import/no-cycle */
 import * as React from 'react';
 // import { makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
@@ -7,65 +8,54 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
-// import Image from 'material-ui-image';
+import Box from '@material-ui/core/Box';
+import { useAppProvider } from '../AppProvider/AppProvider';
 
-export const MovieList = (props: { movies: any; }) => {
-  const { movies } = props;
+export const MovieList = () => {
+  const { moviesList, setMoviesList } = useAppProvider();
 
-  // const columns = [
-  //   { field: 'id', headerName: 'ID', width: 100 },
-  //   { field: 'image', headerName: 'Image', width: 200 },
-  //   { field: 'title', headerName: 'Title', width: 500 },
-  //   { field: 'currentRate', headerName: 'Rate', width: 130 },
-  //   { field: 'year', headerName: 'Year', width: 100 },
-  // ];
+  const onRemoveMovie = (id: number) => {
+    const updatedList = moviesList.filter((movie) => movie.id !== id);
 
-  // const rows = movies.map((movie: {
-  //   id: any,
-  //   poster_path: any;
-  //   title: any;
-  //   popularity: any;
-  //   released_date: any;
-  // }) => ({
-  //   id: movie.id,
-  //   image: movie.poster_path,
-  //   title: movie.title,
-  //   currentRate: movie.popularity,
-  //   year: movie.released_date,
-  // }));
+    setMoviesList(updatedList);
+  };
 
   return (
     <TableContainer component={Paper}>
-      {console.log(movies)}
-      {/* <DataGrid rows={rows} columns={columns} pageSize={20} /> */}
       <Table>
         <TableHead>
           <TableRow>
-            <TableCell align="right">ID</TableCell>
-            <TableCell align="right">Image</TableCell>
-            <TableCell align="right">Title</TableCell>
-            <TableCell align="right">Rate</TableCell>
-            <TableCell align="right">Year</TableCell>
+            <TableCell align="center">Image</TableCell>
+            <TableCell align="center">Title</TableCell>
+            <TableCell align="center">Rate</TableCell>
+            <TableCell align="center">Year</TableCell>
+            <TableCell align="center">Tools</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
           {
-            movies.map((movie) => (
+            moviesList.map((movie) => (
               <TableRow key={movie.id}>
-                <TableCell>
-                  {movie.id}
-                </TableCell>
                 <TableCell>
                   <img src={`https://image.tmdb.org/t/p/w200/${movie.poster_path}`} alt="" />
                 </TableCell>
-                <TableCell>
-                  {movie.title}
+                <TableCell align="center">
+                  <a href={`https://www.themoviedb.org/movie/${movie.id}`}>{movie.title}</a>
                 </TableCell>
                 <TableCell>
-                  {movie.popularity}
+                  {movie.vote_average}
                 </TableCell>
                 <TableCell>
-                  {movie.released_date}
+                  {movie.release_date}
+                </TableCell>
+                <TableCell>
+                  {console.log('id', movie.id)}
+                  <Box onClick={() => onRemoveMovie(movie.id)}>
+                    &#10006;
+                  </Box>
+                  <Box>
+                    &#9734;
+                  </Box>
                 </TableCell>
               </TableRow>
             ))
@@ -73,6 +63,5 @@ export const MovieList = (props: { movies: any; }) => {
         </TableBody>
       </Table>
     </TableContainer>
-  // </div>
   );
 };
