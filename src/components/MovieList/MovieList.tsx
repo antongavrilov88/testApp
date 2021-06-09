@@ -1,3 +1,4 @@
+/* eslint-disable guard-for-in */
 /* eslint-disable import/no-cycle */
 import * as React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
@@ -9,6 +10,7 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import Box from '@material-ui/core/Box';
+import { Typography, Link } from '@material-ui/core';
 import { useAppProvider } from '../AppProvider/AppProvider';
 
 const useStyles = makeStyles(
@@ -46,7 +48,6 @@ export const MovieList = () => {
     }
     const getMarkedMovies = () => {
       const initMarkedMoviesList: string[] = [];
-      // eslint-disable-next-line guard-for-in
       for (const key in localStorage) {
         initMarkedMoviesList.push(key);
       }
@@ -72,28 +73,49 @@ export const MovieList = () => {
       <Table>
         <TableHead>
           <TableRow>
-            <TableCell align="center">Image</TableCell>
-            <TableCell align="center">Title</TableCell>
             <TableCell align="center">
-              Rate
-              <Box className={classes.clickable} onClick={() => onSortList()}>&uarr;&darr;</Box>
+              <Typography variant="h6">Poster</Typography>
+              {' '}
+
             </TableCell>
-            <TableCell align="center">Year</TableCell>
-            <TableCell align="center">Tools</TableCell>
+            <TableCell align="center"><Typography variant="h6">Title</Typography></TableCell>
+            <TableCell align="center">
+              <Box display="inline-flex">
+                <Box>
+                  <Typography variant="h6">
+                    Rate
+                  </Typography>
+                </Box>
+                <Box className={classes.clickable} onClick={() => onSortList()}>&uarr;&darr;</Box>
+              </Box>
+            </TableCell>
+            <TableCell align="center">
+              <Typography variant="h6">Year</Typography>
+              {' '}
+
+            </TableCell>
+            <TableCell align="center">
+              <Typography variant="h6">Tools</Typography>
+              {' '}
+
+            </TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
           {
             moviesList.map((movie) => {
               const isMarked = String(movie.id) in localStorage;
-              // eslint-disable-next-line react/jsx-tag-spacing
               return (
                 <TableRow key={movie.id} className={isMarked ? classes.marked : ''}>
                   <TableCell>
                     <img src={`https://image.tmdb.org/t/p/w200/${movie.poster_path}`} alt="" />
                   </TableCell>
                   <TableCell align="center">
-                    <a href={`https://www.themoviedb.org/movie/${movie.id}`}>{movie.title}</a>
+                    <Link href={`https://www.themoviedb.org/movie/${movie.id}`}>
+                      <Typography variant="h6">
+                        {movie.title}
+                      </Typography>
+                    </Link>
                   </TableCell>
                   <TableCell>
                     {movie.vote_average}

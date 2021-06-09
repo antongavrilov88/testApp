@@ -1,7 +1,11 @@
+/* eslint-disable no-plusplus */
+/* eslint-disable array-callback-return */
+/* eslint-disable no-await-in-loop */
+/* eslint-disable guard-for-in */
 /* eslint-disable import/no-cycle */
 import React, { useContext, useEffect, useState } from 'react';
 import Box from '@material-ui/core/Box';
-import { CircularProgress } from '@material-ui/core';
+import { CircularProgress, Typography } from '@material-ui/core';
 import { moviesAPI } from '../../utils/API';
 import { MovieList } from '../MovieList/MovieList';
 
@@ -22,12 +26,10 @@ const initContext: Context = {
 export const AppContext = React.createContext(initContext);
 
 export const AppProvider = () => {
-  // const classes = useStyles();
   const initList: any = [];
 
   const getMarkedMovies = () => {
     const initMarkedMoviesList: string[] = [];
-    // eslint-disable-next-line guard-for-in
     for (const key in localStorage) {
       initMarkedMoviesList.push(key);
     }
@@ -44,14 +46,11 @@ export const AppProvider = () => {
       const listPages: any[] = [];
       let i = 1;
       while (i <= 25) {
-        // eslint-disable-next-line no-await-in-loop
         const page = await moviesAPI.getList(i);
         listPages.push(page.results);
-        // eslint-disable-next-line no-plusplus
         i++;
       }
       const listMovies: any = [];
-      // eslint-disable-next-line array-callback-return
       listPages.map((page) => {
         page.map((movie) => listMovies.push(movie));
       });
@@ -71,10 +70,17 @@ export const AppProvider = () => {
         setMarkedMovies,
       }}
     >
-      <Box display="flex" justifyContent="center">
-        <Box>
-          {moviesList.length !== 0 ? <MovieList />
-            : <CircularProgress />}
+      <Box display="flex" flexDirection="column">
+        <Box textAlign="center">
+          <Typography variant="h2" color="primary" gutterBottom>
+            Test app - 500 TopRated movies
+          </Typography>
+        </Box>
+        <Box display="flex" justifyContent="center">
+          <Box>
+            {moviesList.length !== 0 ? <MovieList />
+              : <CircularProgress />}
+          </Box>
         </Box>
       </Box>
     </AppContext.Provider>
