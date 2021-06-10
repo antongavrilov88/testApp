@@ -9,11 +9,17 @@ import { CircularProgress, Typography } from '@material-ui/core';
 import { moviesAPI } from '../../utils/API';
 import { MovieList } from '../MovieList/MovieList';
 
+type Movie = Record<string, any>;
+
+type MoviesList = Movie[];
+
+type MarkedMovies = string[];
+
 type Context = {
-  moviesList: any[],
-  setMoviesList: ((arg: any) => void) | any,
-  markedMovies: boolean[] | any
-  setMarkedMovies: ((arg: any) => void) | any,
+  moviesList: MoviesList,
+  setMoviesList: ((arg: MoviesList) => void),
+  markedMovies: MarkedMovies,
+  setMarkedMovies: ((arg: string[]) => void),
 };
 
 const initContext: Context = {

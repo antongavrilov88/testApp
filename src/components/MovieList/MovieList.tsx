@@ -11,6 +11,7 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import Box from '@material-ui/core/Box';
 import { Typography, Link } from '@material-ui/core';
+
 import { useAppProvider } from '../AppProvider/AppProvider';
 
 const useStyles = makeStyles(
@@ -69,40 +70,39 @@ export const MovieList = () => {
   };
 
   return (
-    <TableContainer component={Paper}>
-      <Table>
-        <TableHead>
-          <TableRow>
-            <TableCell align="center">
-              <Typography variant="h6">Poster</Typography>
-              {' '}
-
-            </TableCell>
-            <TableCell align="center"><Typography variant="h6">Title</Typography></TableCell>
-            <TableCell align="center">
-              <Box display="inline-flex">
-                <Box>
-                  <Typography variant="h6">
-                    Rate
-                  </Typography>
+    <Paper elevation={3} variant="outlined">
+      <TableContainer component={Paper}>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell align="center">
+                <Typography variant="h6">Poster</Typography>
+              </TableCell>
+              <TableCell align="center"><Typography variant="h6">Title</Typography></TableCell>
+              <TableCell align="center">
+                <Box display="inline-flex">
+                  <Box>
+                    <Typography variant="h6">
+                      Rate
+                    </Typography>
+                  </Box>
+                  <Box className={classes.clickable} onClick={() => onSortList()}>&uarr;&darr;</Box>
                 </Box>
-                <Box className={classes.clickable} onClick={() => onSortList()}>&uarr;&darr;</Box>
-              </Box>
-            </TableCell>
-            <TableCell align="center">
-              <Typography variant="h6">Year</Typography>
-              {' '}
+              </TableCell>
+              <TableCell align="center">
+                <Typography variant="h6">Year</Typography>
+                {' '}
 
-            </TableCell>
-            <TableCell align="center">
-              <Typography variant="h6">Tools</Typography>
-              {' '}
+              </TableCell>
+              <TableCell align="center">
+                <Typography variant="h6">Tools</Typography>
+                {' '}
 
-            </TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {
+              </TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {
             moviesList.map((movie) => {
               const isMarked = String(movie.id) in localStorage;
               return (
@@ -118,7 +118,9 @@ export const MovieList = () => {
                     </Link>
                   </TableCell>
                   <TableCell>
-                    {movie.vote_average}
+                    <Typography variant="h5">
+                      {movie.vote_average}
+                    </Typography>
                   </TableCell>
                   <TableCell>
                     {movie.release_date}
@@ -135,8 +137,9 @@ export const MovieList = () => {
               );
             })
           }
-        </TableBody>
-      </Table>
-    </TableContainer>
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </Paper>
   );
 };
